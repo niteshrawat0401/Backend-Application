@@ -1,13 +1,20 @@
 const express = require("express");
+const connection = require("./db/db");
+const authRouter = require("./Routes/authUser");
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use("/", (req, res) => {
+app.use("/auth", authRouter);
+
+app.get("/", (req, res) => {
   res.send("Hello");
 });
 
-app.listen(8080, () => {
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, async () => {
+  await connection;
   console.log(`Server started at http://localhost:8080`);
 });

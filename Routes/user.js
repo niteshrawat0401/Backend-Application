@@ -30,4 +30,18 @@ userRouter.get("/:userid/userdata", async (req, res) => {
   res.send(userdatas);
 });
 
+// Delete
+userRouter.delete("/:userid/employee/:employeeId", async (req, res) => {
+  const userid = req.params.userid;
+  const employeeid = req.params.employeeId;
+  const userEmployee = await profileData
+    .deleteOne({ _id: employeeid, userid: userid })
+    .then((result) => {
+      return res.status(201).send({ message: "Deleted Successfully" });
+    })
+    .catch((err) => {
+      return res.status(401).send({ message: "Somethinf went wrong" });
+    });
+});
+
 module.exports = userRouter;

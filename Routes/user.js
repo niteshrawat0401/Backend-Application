@@ -23,4 +23,11 @@ userRouter.post("/:userid/userdata", (req, res) => {
   });
 });
 
-module.exports= userRouter
+// get
+userRouter.get("/:userid/userdata", async (req, res) => {
+  const { userid } = req.params;
+  const userdatas = await profileData.find({ userId: userid });
+  res.send(userdatas);
+});
+
+module.exports = userRouter;

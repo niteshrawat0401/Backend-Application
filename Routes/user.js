@@ -44,4 +44,21 @@ userRouter.delete("/:userid/employee/:employeeId", async (req, res) => {
     });
 });
 
+// Patch
+userRouter.patch("/:userid/employee/:employeeId", async (req, res) => {
+  const { userid } = req.params;
+  const { employeeId } = req.params;
+  const employee = await profileData.findOne({ _id: employeeId });
+  if (employee.userId == userid) {
+    let update = await profileData.findByIdAndUpdate(
+      { _id: employeeId },
+      req.body,
+      { new: true }
+    );
+    return res.send({ message: "update Successfull", update });
+  } else {
+    return res.send({ message: "Something went wrong" });
+  }
+});
+
 module.exports = userRouter;

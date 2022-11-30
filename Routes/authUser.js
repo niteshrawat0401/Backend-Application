@@ -64,4 +64,20 @@ authRouter.post("/newToken", (req, res) => {
   }
 });
 
+authRouter.get("/profile/:id", async (req, res) => {
+  const { id } = req.params;
+  const token = req.headers["authorization"].split(" ")[1];
+  try {
+    const varification = Jwt.verify(token, "SECRET");
+    if (varification) {
+      const user = await User.findOne({ _id: id });
+      res.send({ profile: "userProfile" });
+    } else {
+      return res.status(401).send("Unauthorized");
+    }
+  } catch (error) {
+    return res.status(401).send("Unauthorized");
+  }
+});
+
 module.exports = authRouter;

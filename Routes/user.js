@@ -61,4 +61,18 @@ userRouter.patch("/:userid/employee/:employeeId", async (req, res) => {
   }
 });
 
+// Filter
+userRouter.get("/filter", async (req, res) => {
+  try {
+    const { page = 1, limit = 2 } = req.query;
+    const feed = await profileData
+      .find().limit(limit * 1).skip((page - 1) * limit);
+    const total = feed.length;
+    res.send({ total, feed });
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+
 module.exports = userRouter;

@@ -78,19 +78,27 @@ userRouter.get("/:userid/filter", async (req, res) => {
 });
 
 // Search
+// For multiple search
 userRouter.get("/:userid/search/:key", async (req, res) => {
   // console.log(req.params.key);
+  const userid = req.params.userid;
   let sear = await profileData.find({
-    $or: [{ name: { $regex: req.params.key } }],
+    $or: [
+      { name: { $regex: req.params.key } },
+      { Department: { $regex: req.params.key } },
+    ],
+    userId: userid,
   });
   res.send(sear);
-  // const { userid } = req.params;
-  // // const userid = req.params.userid;
-  // var regex = new RegExp(req.params.key,"i")
-  // await profileData.find({key:regex,userid:userid}).then((result)=>{
-  //   res.status(200).json(result)
-  //  })
 });
+//   For single search
+//   userRouter.get("/:userid/search/:name", async (req, res) => {
+//   const userid = req.params.userid;
+//   var regex = new RegExp(req.params.name,"i")
+//   await profileData.find({name:regex, userId:userid}).then((result)=>{
+//     res.status(200).json(result)
+//    })
+// });
 
 // Sort
 // userRouter.get("/:userid/sort", async(req,res)=>{

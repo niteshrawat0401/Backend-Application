@@ -84,18 +84,18 @@ userRouter.get("/:userid/search/:key", async (req, res) => {
   const userid = req.params.userid;
   let sear = await profileData.find({
     $or: [
-      { name: { $regex: req.params.key } },
-      { Department: { $regex: req.params.key } },
+      { name: { $regex: req.params.key, $options: "i" } },
+      { Department: { $regex: req.params.key, $options: "i" } },
     ],
     userId: userid,
   });
   res.send(sear);
 });
 //   For single search
-//   userRouter.get("/:userid/search/:name", async (req, res) => {
+//   userRouter.get("/:userid/search/:name", (req, res) => {
 //   const userid = req.params.userid;
 //   var regex = new RegExp(req.params.name,"i")
-//   await profileData.find({name:regex, userId:userid}).then((result)=>{
+//   profileData.find({name:regex, userId:userid}).then((result)=>{
 //     res.status(200).json(result)
 //    })
 // });

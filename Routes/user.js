@@ -77,4 +77,30 @@ userRouter.get("/:userid/filter", async (req, res) => {
   }
 });
 
+// Search
+userRouter.get("/:userid/search/:key", async (req, res) => {
+  // console.log(req.params.key);
+  let sear = await profileData.find({
+    $or: [{ name: { $regex: req.params.key } }],
+  });
+  res.send(sear);
+  // const { userid } = req.params;
+  // // const userid = req.params.userid;
+  // var regex = new RegExp(req.params.key,"i")
+  // await profileData.find({key:regex,userid:userid}).then((result)=>{
+  //   res.status(200).json(result)
+  //  })
+});
+
+// Sort
+// userRouter.get("/:userid/sort", async(req,res)=>{
+//   const userid= req.params;
+//   try {
+//     const userSort= await findById({_id: userid}).sort({_id:-1})
+//     res.send(userSort)
+//   } catch (error) {
+//     res.send("error")
+//   }
+// })
+
 module.exports = userRouter;

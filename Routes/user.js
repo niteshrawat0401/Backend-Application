@@ -78,7 +78,7 @@ userRouter.get("/:userid/filter", async (req, res) => {
 });
 
 // Search
-// For multiple search
+// ---------For multiple search---------
 userRouter.get("/:userid/search/:key", async (req, res) => {
   // console.log(req.params.key);
   const userid = req.params.userid;
@@ -91,7 +91,7 @@ userRouter.get("/:userid/search/:key", async (req, res) => {
   });
   res.send(sear);
 });
-//   For single search
+//   ---------For single search---------
 //   userRouter.get("/:userid/search/:name", (req, res) => {
 //   const userid = req.params.userid;
 //   var regex = new RegExp(req.params.name,"i")

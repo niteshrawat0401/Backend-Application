@@ -1,16 +1,20 @@
 const { Router } = require("express");
 const User = require("../model/auth");
 const Jwt = require("jsonwebtoken");
+const bcrypt= require("bcrypt");
 const authRouter = Router();
 
 // Sign up
-authRouter.post("/signup", (req, res) => {
-  const user = new User(req.body);
-  user.save((err, success) => {
+authRouter.post("/signup", async(req, res) => {
+  // const salt= await bcrypt.genSalt();
+  // const hashpassword= await bcrypt.hash(req.body.password, salt);
+  // const user= {name: req.body.name,username: req.body.username, email: req.body.email, password:hashpassword}
+  const newuser = new User(req.body);
+  newuser.save((err, success) => {
     try {
       return res
         .status(201)
-        .send({ message: "Sign up Successfully", user: success["_doc"] });
+        .send({ message: "Sign up Successfully", newuser: success["_doc"] });
     } catch (error) {
       return res.status(500).send({ message: "Something wen wrong" });
     }

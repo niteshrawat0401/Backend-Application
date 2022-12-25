@@ -65,7 +65,7 @@ userRouter.patch("/:userid/employee/:employeeId", async (req, res) => {
 userRouter.get("/:userid/filter", async (req, res) => {
   const userid = req.params.userid;
   try {
-    const { page = 2, limit = 2 } = req.query;
+
     const feed = await profileData
       .find({ userId: userid })
       .limit(limit * 1)
@@ -82,14 +82,14 @@ userRouter.get("/:userid/filter", async (req, res) => {
 userRouter.get("/:userid/search/:key", async (req, res) => {
   // console.log(req.params.key);
   const userid = req.params.userid;
-  let sear = await profileData.find({
+  let search = await profileData.find({
     $or: [
       { name: { $regex: req.params.key, $options: "i" } },
       { Department: { $regex: req.params.key, $options: "i" } },
     ],
     userId: userid,
   });
-  res.send(sear);
+  return res.send({search});
 });
 //   ---------For single search---------
 //   userRouter.get("/:userid/search/:name", (req, res) => {
@@ -99,6 +99,39 @@ userRouter.get("/:userid/search/:key", async (req, res) => {
 //     res.status(200).json(result)
 //    })
 // });
+
+// --------Pagination-------
+userRouter.get("/:userid/page", async(req, res)=>{
+  let pageSize= 3;
+  let page= parseInt(req.query.page || 0);
+  let totalData= await profileData.countDocuments();
+  let pageFind= await profileData.find()
+  .limit(pageSize).skip(pageSize * page);
+  try {
+    return res.status(201).send({
+      success: true, totalData: Math.ceil( totalData / pageSize),
+      pageFind: pageFind
+    })
+  } catch (error) {
+    return res.status(401).send({ message: "Data not found" })
+  }
+})  
+// ------Pagination (2nd way)------
+// userRouter.get("/:userid/filter", async (req, res) => {
+//   const userid = req.params.userid;
+//   try {
+//     const { page = 3, limit = 2 } = req.query;
+//     const feed = await profileData
+//       .find({ userId: userid })
+//       .limit(limit * 1)
+//       .skip((page - 1) * limit);
+//     const total = feed.length;
+//     res.send({ total, feed });
+//   } catch (e) {
+//     console.log(e);
+//   }
+// });
+
 
 // Sort
 // userRouter.get("/:userid/sort", async(req,res)=>{

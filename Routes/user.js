@@ -40,7 +40,7 @@ userRouter.delete("/:userid/employee/:employeeId", async (req, res) => {
       return res.status(201).send({ message: "Deleted Successfully" });
     })
     .catch((err) => {
-      return res.status(401).send({ message: "Somethinf went wrong" });
+      return res.status(401).send({ message: "Something went wrong" });
     });
 });
 
@@ -62,18 +62,17 @@ userRouter.patch("/:userid/employee/:employeeId", async (req, res) => {
 });
 
 // Filter
-userRouter.get("/:userid/filter", async (req, res) => {
+userRouter.get("/:userid/filter/:key", async (req, res) => {
   const userid = req.params.userid;
   try {
-
-    const feed = await profileData
-      .find({ userId: userid })
-      .limit(limit * 1)
-      .skip((page - 1) * limit);
-    const total = feed.length;
-    res.send({ total, feed });
+    const filterData = await profileData.find({ userId: userid,
+      $or: [
+        { Department: req.params.key }
+      ]
+    })
+    return res.status(201).send({  filterData });
   } catch (e) {
-    console.log(e);
+    return res.status(401).send({ message: "Data dont get" })
   }
 });
 

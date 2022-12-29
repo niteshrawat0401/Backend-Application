@@ -131,16 +131,4 @@ userRouter.get("/:userid/page", async(req, res)=>{
 //   }
 // });
 
-
-// Sort
-// userRouter.get("/:userid/sort", async(req,res)=>{
-//   const userid= req.params;
-//   try {
-//     const userSort= await findById({_id: userid}).sort({_id:-1})
-//     res.send(userSort)
-//   } catch (error) {
-//     res.send("error")
-//   }
-// })
-
 module.exports = userRouter;
